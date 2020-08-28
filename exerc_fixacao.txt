@@ -1,0 +1,71 @@
+create database exerc_fixacao;
+
+use exerc_fixacao;
+
+create table departamentos(
+codigo_Depto int not null primary key,
+nome varchar(30) not null,
+localizacao varchar(30) not null);
+
+create table funcionarios(
+codigo_Func int not null,
+codigo_Depto int not null,
+primeiro_Nome varchar(20) not null,
+segundo_Nome varchar(20),
+ultimo_Nome varchar(20) not null,
+data_Nasc date not null,
+cpf varchar(14) not null unique,
+rg varchar(13) not null,
+endereço varchar(60) not null,
+cep varchar(10) not null,
+cidade varchar(30) default 'itapira',
+fone_Res varchar(14) not null,
+fone_Cel varchar(15) not null,
+funcao varchar(30) not null,
+salario decimal(8,2) not null,
+primary key(codigo_Func),
+foreign key(codigo_Depto) references departamentos(codigo_Depto));
+
+insert into departamentos (codigo_Depto,nome,localizacao)values
+(11,'area fria','predio 1'),
+(12,'area quente','predio 2'),
+(13,'administrativo','predio 3'),
+(14,'comercial','predio 4');
+
+insert into funcionarios (codigo_Func,codigo_Depto,primeiro_Nome,segundo_Nome,ultimo_Nome,data_Nasc,cpf,
+rg,endereço,cep,cidade,fone_Res,fone_Cel,funcao,salario) values 
+(1,11,'patrick','allan','de abreu','1995/03/25','123456789-41','12123456',
+'rua: marechal 434','37590','jacutinga','34435555','9-97607657','auxiliar',1100.00),
+(2,11,'joao','','vilela','1994/05/14','234567897-52','23456789','rua: abril 34',
+'37590','jacutinga','34434585','9-87487574','auxiliar',1100.00),
+(3,12,'ricardo','','zili','1989/04/17','345678945-55','34554780','rua: acre 70',
+'37590','jacutinga','34437874','9-99887744','supervisor',2100.00),
+(4,12,'allan','','de sousa','1991/04/18','147258396-74','45674874','rua: marta de paula 140',
+'37590','jacutinga','34433355','9-98747576','operador de maquina',1700.00),
+(5,13,'micael','','de depaula','1988/03/10','457485754-80','54584754','rua:antonio candido',
+'37590','jacutinga','34437447','9-99552211','gerente',4000.00),
+(6,14,'bernardo','','lima','1990/07/27','547478569-90','17847585','rua: virgilio de cassia',
+'37590','jacutinga','34437448','9-97584652','vendedor',1600.00);
+
+select primeiro_Nome,segundo_Nome,ultimo_Nome from funcionarios order by  ultimo_Nome asc;
+
+select * from funcionarios order by cidade asc;
+
+select primeiro_Nome,segundo_Nome,ultimo_Nome,salario from funcionarios 
+where salario > 1000.00 
+order by primeiro_Nome,segundo_Nome,ultimo_Nome asc;
+
+select data_Nasc,primeiro_Nome from funcionarios order by data_Nasc desc;
+
+
+select primeiro_Nome,segundo_Nome,ultimo_Nome,funcao,endereço,cep,cidade,fone_Res,fone_Cel
+from funcionarios order by primeiro_Nome,segundo_Nome,ultimo_Nome asc;
+
+select SUM(salario) as total_folha_pagamento  from funcionarios;
+
+select count(primeiro_Nome) as total_funcionarios from funcionarios;
+
+select avg(salario) as media_salaria from funcionarios;
+
+select primeiro_Nome,segundo_Nome,ultimo_Nome,cidade,funcao from funcionarios 
+where cidade = 'itapira' and funcao = 'recepcionista';
